@@ -4,16 +4,12 @@
 int frameCounter=1;
 
 
-int Frame(){
+int currentFrame(){
     return frameCounter;
 }
 
 int nextFrame(){
 
-    if (frameCounter++ == 8){
-        frameCounter=RESET;
-        return frameCounter;}
-    else
         return frameCounter++;
 
 }

@@ -2,7 +2,7 @@
 #include <sys/types.h>
 #include "pagetable.h"
 
-int pageFaults=0;
+int referenceBit=0;
 
 pageEntry * initialize(){
 // return a preinited page table
@@ -10,20 +10,34 @@ pageEntry * initialize(){
     // frame number unknown so not set
     for(int x=0;x<TABLE_SIZE;x++){
         entry[x].valid=0;
+        entry[x].frameNumber=-1;
         entry[x].reference=0;
     }
 
     return entry;
-    
-void enterAddress(pageEntry *pageTable,u_int32_t enter_address){
-    //inputs address into page table and counts faults
+}    
+
+u_int32_t lowestRef(pageEntry * table,u_int32_t length,u_int32_t page_num){
+    u_int32_t lowest=table[0].reference;
+    u_int32_t index=0;
+    for(int x=1;x<length;x++){
+        //finds lowest and prevents replacing itself
+        if(lowest > table[x].reference && x!=page_num){
+            lowest= table[x].reference;
+            index=x;
+        }
+    return index;
+
+
+
+
+    }
 
 }
+u_int32_t updateRef(){
+    return referenceBit++;
+}
 
-
-
-
-
-
-
+u_int32_t currentRef(){
+    return referenceBit;
 }

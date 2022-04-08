@@ -6,13 +6,22 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "make  ",
+            "command": "make",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
             }
-        },
+        },{
+            "label": "run",
+            "type": "shell",
+            "command": "./part2 part2sequence out",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
       
         
     ]

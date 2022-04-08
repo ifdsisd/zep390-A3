@@ -1,3 +1,3 @@
 #define RESET 1
-int Frame();
+int currentFrame();
 int nextFrame();
