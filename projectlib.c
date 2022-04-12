@@ -8,28 +8,28 @@
 #include <string.h>
 
 
-int mapAddress(u_int32_t virtualAddress,u_int32_t * physicalAddress,u_int32_t * pageTable){
+int mapAddress(unsigned long virtualAddress,unsigned long * physicalAddress,unsigned long * pageTable){
         //returns memory mapped physical address
         
-        u_int32_t index = virtualAddress >> 7;
-        u_int32_t offset = virtualAddress & 0x7f;
+        unsigned long index = virtualAddress >> 7;
+        unsigned long offset = virtualAddress & 0x7f;
         // pushes frame offset to appropiate place and then OR's offset onto it
-        u_int32_t address = (pageTable[index] << 7 | offset);
+        unsigned long address = (pageTable[index] << 7 | offset);
         *physicalAddress = address;
         
         return 0;
 }
 
-int readFile(char * fileName,u_int32_t** memoryTable){
+int readFile(char * fileName,unsigned long** memoryTable){
     //writes contents of file onto memorytable buffer
     
     struct stat st;
-	u_int32_t filesize;
+	unsigned long filesize;
     stat(fileName,&st);
     filesize=st.st_size;
 
     double l =2;
-    *memoryTable = (u_int32_t*)  malloc(filesize);
+    *memoryTable = (unsigned long*)  malloc(filesize);
 
  
     //loads addresses in file pointed to by bmemorytale, returns 1 on fail and 0 on success
@@ -52,6 +52,6 @@ int readFile(char * fileName,u_int32_t** memoryTable){
 
 
 }
-u_int32_t getIndex(u_int32_t address){
+unsigned long getIndex(unsigned long address){
     return address >>7;
 }

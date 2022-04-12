@@ -9,7 +9,7 @@
 #include <string.h>
 #include "projectlib.h"
 
-u_int32_t  pageTable[SIZE]={2,4,1,7,3,5,6};
+unsigned long  pageTable[SIZE]={2,4,1,7,3,5,6};
 
 
 int main(int argc, char * argv[]){
@@ -17,7 +17,7 @@ int main(int argc, char * argv[]){
     char * fileName;
     char * outputFile;
     int fd_out;
-    u_int32_t * memAccesses;
+    unsigned long * memAccesses;
 
 
     if(argc != 3){
@@ -44,13 +44,13 @@ int main(int argc, char * argv[]){
         fprintf(stderr,"File couldn't be written with error %s\n",strerror(errno)); 
     }
 
-    for(u_int32_t x=0;x<filesize/(sizeof(u_int32_t));x++){
-        u_int32_t  virtualAddress = memAccesses[x];
-        u_int32_t  physicalOffset = 0;
+    for(unsigned long x=0;x<filesize/(sizeof(unsigned long));x++){
+        unsigned long  virtualAddress = memAccesses[x];
+        unsigned long  physicalOffset = 0;
         mapAddress(virtualAddress,&physicalOffset,pageTable);
 
         
-        if (write(fd_out,&physicalOffset,sizeof(u_int32_t)) == -1){
+        if (write(fd_out,&physicalOffset,sizeof(unsigned long)) == -1){
             fprintf(stderr,"Unable to write to file with error %s\n",strerror(errno));
             exit(1);
         }

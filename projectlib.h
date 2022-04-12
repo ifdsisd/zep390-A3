@@ -8,8 +8,8 @@
 #include <string.h>
 
 
-int  mapAddress(u_int32_t virtualAddress,u_int32_t * physicalAddress,u_int32_t * pageTable);
+int  mapAddress(unsigned long virtualAddress,unsigned long * physicalAddress,unsigned long * pageTable);
 
-int readFile(char * fileName,u_int32_t ** memoryTable);
+int readFile(char * fileName,unsigned long ** memoryTable);
 
-u_int32_t getIndex(u_int32_t address);
+unsigned long getIndex(unsigned long address);
