@@ -23,7 +23,7 @@ u_int32_t lowestRef(pageEntry * table,u_int32_t length,u_int32_t page_num){
     u_int32_t lowest=table[0].reference;
     u_int32_t index=0;
     for(int x=1;x<length;x++){
-        printf("Index: %d Value: %d\n",x,table[x].reference);
+        // printf("Index: %d Value: %d\n",x,table[x].reference);
         //finds lowest and prevents replacing itself
         if(lowest > table[x].reference && x!=page_num){
             lowest= table[x].reference;
