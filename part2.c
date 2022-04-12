@@ -78,7 +78,6 @@ int main(int argc,char * argv[]){
         }
         //otherwise... swapping ensues
         else{
-            // printf("Swapping is occuring\n");
             
             if(virtTable[index].valid==1){
                 virtTable[index].reference=currentRef();
@@ -88,7 +87,7 @@ int main(int argc,char * argv[]){
                 unsigned long lowestRefIndex = lowestRef(virtTable,32,index);//could need fixin
                 printf("Swapping out least recently used frame at %d\n",lowestRefIndex);
                 //invalidates
-                virtTable[lowestRefIndex].valid=0;
+                virtTable[lowestRefIndex].valid=0;  
                 // validates stealer
                 virtTable[index].valid=1;
                 //steals frame

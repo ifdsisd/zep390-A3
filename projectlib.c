@@ -21,14 +21,13 @@ int mapAddress(unsigned long virtualAddress,unsigned long * physicalAddress,unsi
 }
 
 int readFile(char * fileName,unsigned long** memoryTable){
-    //writes contents of file onto memorytable buffer
+    //writes contents of file onto memorytable buffer and returns bytes read
     
     struct stat st;
 	unsigned long filesize;
     stat(fileName,&st);
     filesize=st.st_size;
 
-    double l =2;
     *memoryTable = (unsigned long*)  malloc(filesize);
 
  
@@ -42,9 +41,10 @@ int readFile(char * fileName,unsigned long** memoryTable){
     if(read(fd_in,*memoryTable,(int)filesize) == -1){
         fprintf(stderr,"File couldn't be read correctly with error %s\n",strerror(errno));
         exit(errno);
-        }
- 
+    }
     close(fd_in);
+    
+    
     return filesize;
     
 
