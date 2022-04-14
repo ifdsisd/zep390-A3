@@ -23,7 +23,6 @@ int main(int argc,char * argv[]){
 
 
     pageEntry*   virtTable = initialize(); 
-    unsigned long  mapper[SIZE]={2,4,1,7,3,5,6};
     // need to modify array itself later
     unsigned long * addresses=NULL;
     int pageFaults=0;
@@ -58,6 +57,7 @@ int main(int argc,char * argv[]){
         
         
         
+        
        
         
         // frames are still availible
@@ -69,6 +69,7 @@ int main(int argc,char * argv[]){
         
             if(virtTable[index].valid == 0){
                 virtTable[index].valid=1;
+                printf("Page Fault\n");
                 pageFaults++;
             }
             else{
@@ -78,14 +79,16 @@ int main(int argc,char * argv[]){
         }
         //otherwise... swapping ensues
         else{
-            
             if(virtTable[index].valid==1){
                 virtTable[index].reference=currentRef();
+                // printf("Matching page found at %d\n",index);
 
             }
             else{
+                pageFaults++;
                 unsigned long lowestRefIndex = lowestRef(virtTable,32,index);//could need fixin
-                printf("Swapping out least recently used frame at %d\n",lowestRefIndex);
+                // printf("Swapping out least recently used frame at %d\t",virtTable[lowestRefIndex].frameNumber);
+                // printf("Valid bit of oldest frame is %d\n",virtTable[lowestRefIndex].valid);
                 //invalidates
                 virtTable[lowestRefIndex].valid=0;  
                 // validates stealer
@@ -94,19 +97,17 @@ int main(int argc,char * argv[]){
                 virtTable[index].frameNumber = virtTable[lowestRefIndex].frameNumber;
                 virtTable[index].reference=currentRef();
                 //
-            
+                // printf("Mem Addr: %#010lx : Frame %d taken from Index %d : new Index at %d\t",virtAddress,virtTable[lowestRefIndex].frameNumber,lowestRefIndex,index);
+                // printf("Reference updated to %d\n",currentRef());
             }
-            //finds LRU
-         
+
+
            
 
         }
         
         updateRef();
-        // printf("Frame overview valid: %x frame: %x reference:%d\n",virtTable[index].valid,virtTable[index].frameNumber,virtTable[index].reference) ;       
-        // printf("Sanity checks  table index:\t%x Index-> Decimal %d Hex %x \n",virtTable[index],index,index);
-        // printf("Sanity checks  memory location:\t%x \n",virtAddress);
-        // printf("====================================================================");
+        
                
 
     }
@@ -119,11 +120,10 @@ int main(int argc,char * argv[]){
 
     // enterAddress(pageTable,address);
   
-  
     free(virtTable);
     free(addresses);
 
-
+    printf("Number of page faults %d\n",pageFaults);
 
     return 0;
 }

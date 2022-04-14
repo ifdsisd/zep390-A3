@@ -8,9 +8,8 @@
           "type": "cppdbg",
           "request": "launch",
           "program": "${workspaceFolder}/part2",
-          "args":["part1testsequence","out"], 
+          "args":["part2sequence","out"], 
       
-          
           "justMyCode":false,
           "stopAtEntry": true,
           "cwd": "${workspaceFolder}",
