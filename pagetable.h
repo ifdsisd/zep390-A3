@@ -7,7 +7,7 @@ typedef struct pageEntry{
 }pageEntry;
 
 pageEntry * initialize();
-
+void printValidTable();
 u_int32_t lowestRef(pageEntry * table,u_int32_t length,u_int32_t page_num);
 
 u_int32_t updateRef();

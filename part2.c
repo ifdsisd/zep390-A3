@@ -69,22 +69,28 @@ int main(int argc,char * argv[]){
         
             if(virtTable[index].valid == 0){
                 virtTable[index].valid=1;
-                printf("Page Fault\n");
+                printf("Page Fault %d\n",pageFaults);
                 pageFaults++;
-            }
-            else{
                 virtTable[index].reference=currentRef();
+
             }
             nextFrame();
         }
         //otherwise... swapping ensues
         else{
+
+
             if(virtTable[index].valid==1){
                 virtTable[index].reference=currentRef();
                 // printf("Matching page found at %d\n",index);
 
             }
             else{
+                if(entry<30){
+                    printValidTable(virtTable);
+                }
+
+
                 pageFaults++;
                 unsigned long lowestRefIndex = lowestRef(virtTable,32,index);//could need fixin
                 // printf("Swapping out least recently used frame at %d\t",virtTable[lowestRefIndex].frameNumber);
@@ -97,8 +103,9 @@ int main(int argc,char * argv[]){
                 virtTable[index].frameNumber = virtTable[lowestRefIndex].frameNumber;
                 virtTable[index].reference=currentRef();
                 //
-                // printf("Mem Addr: %#010lx : Frame %d taken from Index %d : new Index at %d\t",virtAddress,virtTable[lowestRefIndex].frameNumber,lowestRefIndex,index);
-                // printf("Reference updated to %d\n",currentRef());
+                printf("LRU is :%d\n",virtTable[lowestRefIndex].reference);
+                printf("Mem Addr: %#010lx : Frame %d taken from Index %d : new Index at %d\t",virtAddress,virtTable[lowestRefIndex].frameNumber,lowestRefIndex,index);
+                printf("Reference updated to %d\n",currentRef());
             }
 
 
@@ -111,6 +118,7 @@ int main(int argc,char * argv[]){
                
 
     }
+    
     
 
 

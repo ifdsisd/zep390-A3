@@ -12,21 +12,31 @@ pageEntry * initialize(){
     for(int x=0;x<TABLE_SIZE;x++){
         entry[x].valid=0;
         entry[x].frameNumber=-1;
-        entry[x].reference=0;
+        entry[x].reference=-1;
     }
 
     return entry;
 }    
+void printValidTable(pageEntry * table){
 
+    for(int x=0;x<32;x++){
+        if(table[x].valid==1){
+            printf("Index:\t %d ------Frame:\t %d ---- Reference:\t%d\n",x,table[x].frameNumber,table[x].reference);
+        }
+    }
+
+
+
+}
 u_int32_t lowestRef(pageEntry * table,u_int32_t length,u_int32_t page_num){
 
 
     int index=0;
     int lowest=0;
-    for(int x=1;x<length;x++){
+    for(int x=0;x<length;x++){
         //finds lowest and prevents replacing itself
         if(table[x].valid==1){
-            if(index==0){
+            if(lowest==0){
                 lowest = table[x].reference;
                 index=x;
                 }
@@ -41,6 +51,11 @@ u_int32_t lowestRef(pageEntry * table,u_int32_t length,u_int32_t page_num){
 
         
     }
+    printf("Oldest index is %d\n",index);
+    printf("Oldest frame is %d\n",table[index].frameNumber);
+        printf("Oldest ref  is %d\n",table[index].reference);
+
+
 
     return index;
 }

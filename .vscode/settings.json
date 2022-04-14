@@ -2,6 +2,8 @@
     "files.associations": {
         "stdio.h": "c",
         "types.h": "c",
-        "errno.h": "c"
+        "errno.h": "c",
+        "chrono": "c",
+        "variant": "c"
     }
 }
