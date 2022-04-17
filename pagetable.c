@@ -51,9 +51,6 @@ u_int32_t lowestRef(pageEntry * table,u_int32_t length,u_int32_t page_num){
 
         
     }
-    printf("Oldest index is %d\n",index);
-    printf("Oldest frame is %d\n",table[index].frameNumber);
-        printf("Oldest ref  is %d\n",table[index].reference);
 
 
 

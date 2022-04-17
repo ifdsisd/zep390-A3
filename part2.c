@@ -14,7 +14,7 @@
 
 
 
-
+unsigned long  pageTable[SIZE]={2,4,1,7,3,5,6};
 
 
 
@@ -44,16 +44,25 @@ int main(int argc,char * argv[]){
     size_t memoryEntries = readFile(fileName,&addresses);
 
     memoryEntries=memoryEntries / sizeof(unsigned long);
-    
+    int fd_out = open(outputFile,O_WRONLY|O_CREAT|O_TRUNC,0666);
+    if (fd_out == -1){
+        fprintf(stderr,"File couldn't be written with error %s\n",strerror(errno)); 
+    }
     
 
     for(int entry=0;entry<memoryEntries;entry++){
         // *addresses, memory read from file
         // virtAddress memory with valid bit ,frame number,and reference counter 
         unsigned long virtAddress = addresses[entry];
+        unsigned long  phyAddress =0;
+
+        mapAddress(virtAddress,&phyAddress,pageTable);
+
+        printf("Virtual Address is: %#10lx ----->",virtAddress);
+        printf("Physical Address is: %#010lx\n",phyAddress);
         unsigned long index = getIndex(virtAddress);
         // load up and update page entry
-        
+        printf("Index is %d\n",index);
         
         
         
@@ -103,9 +112,6 @@ int main(int argc,char * argv[]){
                 virtTable[index].frameNumber = virtTable[lowestRefIndex].frameNumber;
                 virtTable[index].reference=currentRef();
                 //
-                printf("LRU is :%d\n",virtTable[lowestRefIndex].reference);
-                printf("Mem Addr: %#010lx : Frame %d taken from Index %d : new Index at %d\t",virtAddress,virtTable[lowestRefIndex].frameNumber,lowestRefIndex,index);
-                printf("Reference updated to %d\n",currentRef());
             }
 
 
@@ -115,13 +121,17 @@ int main(int argc,char * argv[]){
         
         updateRef();
         
+        if (write(fd_out,&phyAddress,sizeof(unsigned long)) == -1){
+            fprintf(stderr,"Unable to write to file with error %s\n",strerror(errno));
+            exit(1);
+        }
                
 
     }
     
     
 
-
+    close(fd_out);
     
 
 
