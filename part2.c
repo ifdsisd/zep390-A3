@@ -55,14 +55,13 @@ int main(int argc,char * argv[]){
         // virtAddress memory with valid bit ,frame number,and reference counter 
         unsigned long virtAddress = addresses[entry];
         unsigned long  phyAddress =0;
-
-        mapAddress(virtAddress,&phyAddress,pageTable);
-
-        printf("Virtual Address is: %#10lx ----->",virtAddress);
-        printf("Physical Address is: %#010lx\n",phyAddress);
+        unsigned long offset = 0;
         unsigned long index = getIndex(virtAddress);
+        
+
+        
+        
         // load up and update page entry
-        printf("Index is %d\n",index);
         
         
         
@@ -72,16 +71,25 @@ int main(int argc,char * argv[]){
         // frames are still availible
         if (currentFrame()<8 ){
        
-            virtTable[index].frameNumber=currentFrame();
+            
         
-        
+            
         
             if(virtTable[index].valid == 0){
+
+                phyAddress = currentFrame() << 7;
+                offset = virtAddress & 0x7f;
+                phyAddress = phyAddress | offset;
+
+
                 virtTable[index].valid=1;
                 printf("Page Fault %d\n",pageFaults);
                 pageFaults++;
                 virtTable[index].reference=currentRef();
-
+                virtTable[index].frameNumber=currentFrame();
+                printf("Current Frame is: %d\n",currentFrame());
+                printf("Virtual Address is: %#10lx ----->",virtAddress);
+                printf("Physical Address is: %#010lx\n",phyAddress);
             }
             nextFrame();
         }
@@ -90,14 +98,12 @@ int main(int argc,char * argv[]){
 
 
             if(virtTable[index].valid==1){
+
                 virtTable[index].reference=currentRef();
                 // printf("Matching page found at %d\n",index);
 
             }
             else{
-                if(entry<30){
-                    printValidTable(virtTable);
-                }
 
 
                 pageFaults++;
@@ -113,11 +119,14 @@ int main(int argc,char * argv[]){
                 virtTable[index].reference=currentRef();
                 //
             }
-
+            phyAddress = virtTable[index].frameNumber << 7;
+            offset = virtAddress & 0x7f;
+            phyAddress = phyAddress | offset;
 
            
 
         }
+        
         
         updateRef();
         
